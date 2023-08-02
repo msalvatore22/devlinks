@@ -1,13 +1,33 @@
 import './App.css'
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/Home";
+import LoginPage from "./pages/Login";
+import { initializeApp } from "firebase/app";
+import { config } from "./config/config";
+import AuthRoute from "./components/AuthRoute";
+import SignUp from './pages/SignUp';
 
-function App() {
+initializeApp(config.firebase);
 
-  return (
-		<div className="flex flex-col justify-center items-center w-screen h-screen bg-neutral">
-			<h1 className="text-3xl font-bold underline">Hello world!</h1>
-			<button className="btn">Hello daisyUI</button>
-		</div>
-  );
-}
+export interface IApplicationProps {}
+
+const App: React.FunctionComponent<IApplicationProps> = (props) => {
+	return (
+		<BrowserRouter>
+			<Routes>
+				<Route
+					path="/"
+					element={
+						<AuthRoute>
+							<HomePage />
+						</AuthRoute>
+					}
+				/>
+				<Route path="/login" element={<LoginPage />} />
+				<Route path="/signup" element={<SignUp />} />
+			</Routes>
+		</BrowserRouter>
+	);
+};
 
 export default App

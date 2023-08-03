@@ -9,7 +9,6 @@ const NavBar = () => {
 		signOut(auth)
 			.then(() => {
 				// Sign-out successful.
-				console.log("navigating to home");
 				navigate("/getStarted");
 			})
 			.catch((error) => {

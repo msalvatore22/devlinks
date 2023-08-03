@@ -1,53 +1,22 @@
 import React, { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { db, auth } from "../firebase/firebase";
-import {
-	query,
-	doc,
-	getDocs,
-	collection,
-	where,
-	writeBatch,
-} from "firebase/firestore";
+import { useAuth } from "../hooks/useAuth";
 
 const SignUp = () => {
 	const navigate = useNavigate();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
+	const { signUp } = useAuth();
 
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
+
 		try {
-			const res = await createUserWithEmailAndPassword(
-				auth,
-				email,
-				password
-			);
-			const authUser = res.user;
-			console.log(authUser);
-			const q = query(
-				collection(db, "users"),
-				where("uid", "==", authUser.uid)
-			);
-			const docs = await getDocs(q);
-
-			if (docs.docs.length === 0) {
-				const batch = writeBatch(db);
-
-				batch.set(doc(db, "users", authUser.uid), {
-					email: authUser.email,
-					photoURL: authUser?.photoURL ?? null,
-					links: [],
-					firstname: "",
-					lastname: "",
-				});
-				await batch.commit();
-			}
-			navigate("/");
-		} catch (err) {
-			console.log(err);
+			await signUp(email, password);
+			navigate("/")
+		} catch(err) {
+			console.log(err)
 		}
 	};
 

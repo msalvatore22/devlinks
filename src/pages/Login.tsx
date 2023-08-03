@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase/firebase";
+import { useAuth } from "../hooks/useAuth";
 
 export interface LoginPageProps {}
 
@@ -9,22 +8,16 @@ const LoginPage: React.FunctionComponent<LoginPageProps> = (props) => {
 	const navigate = useNavigate();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const { signIn } = useAuth()
 
-	async function handleSubmit(e: any) {
+	async function handleSubmit(e: React.FormEvent) {
 		e.preventDefault();
-		signInWithEmailAndPassword(auth, email, password)
-			.then((userCredential) => {
-				// Signed in
-				const user = userCredential.user;
-
-				if (user) {
-					navigate("/");
-				}
-				// ...
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		try {
+			await signIn(email, password)
+			navigate("/")
+		} catch(err) {
+			console.log(err)
+		}
 	}
 
 	return (

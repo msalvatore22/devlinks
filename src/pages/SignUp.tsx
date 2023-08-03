@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { db } from "../config/firebase";
+import { db, auth } from "../firebase/firebase";
 import {
 	query,
 	doc,
@@ -12,14 +12,13 @@ import {
 } from "firebase/firestore";
 
 const SignUp = () => {
-	const auth = getAuth();
 	const navigate = useNavigate();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 
-	const handleSubmit = async (e) => {
-        e.preventDefault();
+	const handleSubmit = async (e: any) => {
+		e.preventDefault();
 		try {
 			const res = await createUserWithEmailAndPassword(
 				auth,
@@ -27,7 +26,7 @@ const SignUp = () => {
 				password
 			);
 			const authUser = res.user;
-            console.log(authUser)
+			console.log(authUser);
 			const q = query(
 				collection(db, "users"),
 				where("uid", "==", authUser.uid)

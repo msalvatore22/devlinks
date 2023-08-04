@@ -7,14 +7,8 @@ import {
 	onAuthStateChanged,
 } from "firebase/auth";
 import {
-	query,
 	doc,
-	getDocs,
-	collection,
-	where,
-	writeBatch,
 	setDoc,
-	getDoc,
 	onSnapshot,
 	updateDoc,
 	arrayUnion,
@@ -145,7 +139,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 			try {
 				const userRef = doc(db, "users", auth.currentUser.uid);
 				await updateDoc(userRef, {
-					links: links
+					links: links,
 				});
 			} catch (error) {
 				throw new Error("Failed to add Link.");

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 import { Link, useAuth } from "../hooks/useAuth";
 
 interface MenuItem {

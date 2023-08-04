@@ -1,5 +1,3 @@
-import React from "react";
-
 const HowTo = () => {
 	return (
 		<div className="flex flex-col justify-center items-center bg-neutral p-10 rounded-xl mt-8">

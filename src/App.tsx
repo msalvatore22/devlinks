@@ -11,7 +11,7 @@ import Logout from "./pages/Logout";
 
 export interface IApplicationProps {}
 
-const App: React.FunctionComponent<IApplicationProps> = (props) => {
+const App: React.FunctionComponent<IApplicationProps> = () => {
 	return (
 		<AuthProvider>
 			<BrowserRouter>

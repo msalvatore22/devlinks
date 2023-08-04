@@ -1,5 +1,3 @@
-import React from 'react'
-
 const PhoneMockUp = () => {
   return (
 		<div className="flex justify-center bg-base-100 rounded-xl p-20">

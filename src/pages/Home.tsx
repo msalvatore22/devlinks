@@ -7,7 +7,7 @@ import DevLinkDynamicForm from "../components/DevLinkDynamicForm";
 
 export interface HomePageProps {}
 
-const HomePage: React.FunctionComponent<HomePageProps> = (props) => {
+const HomePage: React.FunctionComponent<HomePageProps> = () => {
 	const { user } = useAuth()
 		return (
 			<div className="grid grid-cols-40-auto gap-x-6 mt-6">

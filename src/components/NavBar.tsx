@@ -1,28 +1,63 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
-const NavBar = () => {
+type NavBarProps = {
+	activeBtnToggle: boolean;
+	setActiveBtnToggle: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const NavBar = ({ activeBtnToggle, setActiveBtnToggle }: NavBarProps) => {
 	const navigate = useNavigate();
-	const { signOutUser, user } = useAuth()
+	const { signOutUser, user } = useAuth();
 	async function handleSignOut() {
-		signOutUser()
-		navigate("/getStarted")
+		signOutUser();
+		navigate("/getStarted");
 	}
+
+	const handleLinksClick = () => {
+		setActiveBtnToggle(true);
+	};
+
+	const handleProfileClick = () => {
+		setActiveBtnToggle(false);
+	};
 
 	if (user) {
 		return (
 			<div className="navbar bg-base-100 flex justify-between rounded-xl p-4">
 				<img src="/logo-devlinks-large.svg" alt="devlinks logo"></img>
 				<div>
-					<a href="/home/links" className="btn btn-secondary">
+					<button
+						onClick={handleLinksClick}
+						className={
+							activeBtnToggle
+								? "btn btn-accent text-primary"
+								: "btn btn-ghost text-gray mr-8"
+						}
+					>
+						<img
+							src="/icon-links-header.svg"
+							alt="icon for link"
+						></img>
 						Links
-					</a>
-					<a href="/home/profile" className="btn btn-link ml-8">
+					</button>
+					<button
+						onClick={handleProfileClick}
+						className={
+							!activeBtnToggle
+								? "btn btn-accent text-primary"
+								: "btn btn-ghost text-gray ml-8"
+						}
+					>
+						<img
+							src="/icon-profile-details-header.svg"
+							alt="icon for link"
+						></img>
 						Profile Details
-					</a>
+					</button>
 				</div>
 				<div>
-					<button className="btn btn-outline btn-primary mr-8">
+					<button className="btn btn-outline btn-primary btn-wide mr-8">
 						Preview
 					</button>
 					<button className="btn btn-ghost" onClick={handleSignOut}>

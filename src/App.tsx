@@ -8,20 +8,23 @@ import NavBar from "./components/NavBar";
 import GetStarted from "./pages/GetStarted";
 import { AuthProvider } from "./hooks/useAuth";
 import Logout from "./pages/Logout";
+import { useState } from "react";
 
 export interface IApplicationProps {}
 
 const App: React.FunctionComponent<IApplicationProps> = () => {
+	const [activeBtnToggle, setActiveBtnToggle] = useState(true);
+
 	return (
 		<AuthProvider>
 			<BrowserRouter>
-				<NavBar />
+				<NavBar activeBtnToggle={activeBtnToggle} setActiveBtnToggle={setActiveBtnToggle} />
 				<Routes>
 					<Route
 						path="/"
 						element={
 							<AuthRoute>
-								<HomePage />
+								<HomePage activeBtnToggle={activeBtnToggle} />
 							</AuthRoute>
 						}
 					/>

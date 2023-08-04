@@ -1,23 +1,16 @@
 import React from "react";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const NavBar = () => {
 	const navigate = useNavigate();
+	const { signOutUser, user } = useAuth()
 	async function handleSignOut() {
-		signOut(auth)
-			.then(() => {
-				// Sign-out successful.
-				navigate("/getStarted");
-			})
-			.catch((error) => {
-				// An error happened.
-				console.log(error);
-			});
+		signOutUser()
+		navigate("/getStarted")
 	}
 
-	if (auth.currentUser) {
+	if (user) {
 		return (
 			<div className="navbar bg-base-100 flex justify-between rounded-xl p-4">
 				<img src="/logo-devlinks-large.svg" alt="devlinks logo"></img>

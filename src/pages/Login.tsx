@@ -4,7 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 
 export interface LoginPageProps {}
 
-const LoginPage: React.FunctionComponent<LoginPageProps> = (props) => {
+const LoginPage: React.FunctionComponent<LoginPageProps> = () => {
 	const navigate = useNavigate();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");

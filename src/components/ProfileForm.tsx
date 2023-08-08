@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth, ProfileDetails } from "../hooks/useAuth";
 
 type Props = {};
 
 const ProfileForm: React.FC<Props> = () => {
-	const { user, uploadImage } = useAuth();
-	const [firstName, setFirstName] = useState("");
-	const [lastName, setLastName] = useState("");
-	const [email, setEmail] = useState(user?.email);
+	const { user, uploadImage, updateProfile } = useAuth();
+	const [firstname, setFirstname] = useState(user?.firstname as string);
+	const [lastname, setLastname] = useState(user?.lastname as string);
+	const [email, setEmail] = useState(user?.email as string);
 	const [previewURL, setPreviewURL] = useState(user?.photoURL);
 
 	const handleUploadImage = (e: any) => {
@@ -15,6 +15,16 @@ const ProfileForm: React.FC<Props> = () => {
 		setPreviewURL(URL.createObjectURL(file));
 		uploadImage(file);
 	};
+    
+    const handleSubmit = (e: any) => {
+        e.preventDefault()
+        const profileDetails: ProfileDetails = {
+            email: email,
+            firstname: firstname,
+            lastname: lastname
+        }
+        updateProfile(profileDetails)
+    }
 
 	return (
 		<div>
@@ -30,7 +40,14 @@ const ProfileForm: React.FC<Props> = () => {
 					</div>
 					<div className="flex items-center justify-between">
 						{previewURL ? (
-							<img className="w-48 h-48 rounded-xl" src={previewURL} alt="" />
+							<div className="flex flex-col justify-center">
+								<img
+									className="w-48 h-48 rounded-xl"
+									src={previewURL}
+									alt=""
+								/>
+								<button className="btn btn-ghost mt-4" onClick={() => setPreviewURL("")}>Change photo</button>
+							</div>
 						) : (
 							<input
 								type="file"
@@ -49,7 +66,7 @@ const ProfileForm: React.FC<Props> = () => {
 					</div>
 				</div>
 			</div>
-			<form>
+			<form onSubmit={handleSubmit}>
 				<div className="flex flex-col bg-neutral w-full p-6 rounded-xl my-8">
 					<div className="flex justify-between items-baseline">
 						<p className="text-gray">First name*</p>
@@ -59,8 +76,8 @@ const ProfileForm: React.FC<Props> = () => {
 							placeholder="e.g. Johnny"
 							className="input input-bordered w-4/5 mb-4 focus:border-primary invalid:[&:not(:placeholder-shown):not(:focus)]:border-error"
 							required
-							value={firstName}
-							onChange={(e) => setFirstName(e.target.value)}
+							value={firstname}
+							onChange={(e) => setFirstname(e.target.value)}
 						/>
 					</div>
 					<div className="flex justify-between items-baseline">
@@ -71,8 +88,8 @@ const ProfileForm: React.FC<Props> = () => {
 							placeholder="e.g. Appleseed"
 							className="input input-bordered w-4/5 mb-4 focus:border-primary invalid:[&:not(:placeholder-shown):not(:focus)]:border-error"
 							required
-							value={lastName}
-							onChange={(e) => setLastName(e.target.value)}
+							value={lastname}
+							onChange={(e) => setLastname(e.target.value)}
 						/>
 					</div>
 					<div className="flex justify-between items-baseline">

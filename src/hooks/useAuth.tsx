@@ -32,6 +32,8 @@ interface User {
 	links: Link[];
 }
 
+export type ProfileDetails = Pick<User, "email" | "firstname" | "lastname">;
+
 // define the shape of the data provided by AuthContext
 interface AuthContextType {
 	user: User | null;
@@ -42,6 +44,7 @@ interface AuthContextType {
 	deleteLink: (link: Link) => Promise<void>;
 	updateLinks: (links: Link[]) => Promise<void>;
 	uploadImage: (imageFile: any) => Promise<void>;
+	updateProfile: (profileDetails: ProfileDetails) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -170,6 +173,26 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 		}
 	};
 
+	const updateProfile = async (
+		profileDetails: ProfileDetails
+	): Promise<void> => {
+		if (!auth.currentUser) {
+			throw new Error("User not authenticated.");
+		} else {
+			try {
+				
+				const userRef = doc(db, "users", auth.currentUser.uid);
+				await updateDoc(userRef, {
+					email: profileDetails.email,
+					firstname: profileDetails.firstname,
+					lastname: profileDetails.lastname,
+				});
+			} catch (error) {
+				throw new Error("Failed to add Link.");
+			}
+		}
+	};
+
 	const value: AuthContextType = {
 		user,
 		signUp,
@@ -179,6 +202,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 		deleteLink,
 		updateLinks,
 		uploadImage,
+		updateProfile,
 	};
 
 	return (

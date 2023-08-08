@@ -26,7 +26,9 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({
 							<DevLinkDynamicForm />
 						</div>
 					) : (
-						<ProfileForm />
+						<div className="bg-base-100 rounded-xl p-10">
+							<ProfileForm />
+						</div>
 					)}
 				</>
 			) : (

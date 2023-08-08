@@ -95,6 +95,7 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 
 	useEffect(() => {
 		setDevLinkInputs(user?.links as any[]);
+		console.log("useeffect fired")
 	}, [user?.links]);
 
 	const handleDevLinkChange = (e: any) => {
@@ -161,7 +162,9 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 						</div>
 						<div className="form-control w-full">
 							<label htmlFor="platform" className="label">
-								<span className="label-text text-xs">Platform</span>
+								<span className="label-text text-xs">
+									Platform
+								</span>
 							</label>
 							<select
 								className="select select-bordered platform"

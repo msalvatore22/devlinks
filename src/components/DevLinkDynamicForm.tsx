@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useAuth } from "../hooks/useAuth";
 
 interface MenuItem {
@@ -95,7 +95,7 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 
 	useEffect(() => {
 		setDevLinkInputs(user?.links as any[]);
-		console.log("useeffect fired")
+		console.log("useeffect fired");
 	}, [user?.links]);
 
 	const handleDevLinkChange = (e: any) => {
@@ -109,14 +109,17 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 	const handleDevPlatformChange = (e: any) => {
 		const updatedLinks = [...devlinkInputs];
 		let url = "";
+		let iconPath = "";
 		for (let item of menuItems) {
 			if (item.platform === e.target.value) {
 				url = item.baseURL;
+				iconPath = item.iconPath;
 			}
 		}
 		updatedLinks[e.target.dataset.idx][e.target.dataset.name] =
 			e.target.value;
 		updatedLinks[e.target.dataset.idx]["url"] = url;
+		updatedLinks[e.target.dataset.idx]["iconPath"] = iconPath;
 		setDevLinkInputs(updatedLinks);
 	};
 

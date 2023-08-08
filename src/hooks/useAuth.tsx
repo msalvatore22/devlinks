@@ -20,6 +20,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 export interface Link {
 	url: string;
 	platform: string;
+	iconPath: string;
 	id: string;
 }
 
@@ -180,7 +181,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 			throw new Error("User not authenticated.");
 		} else {
 			try {
-				
+
 				const userRef = doc(db, "users", auth.currentUser.uid);
 				await updateDoc(userRef, {
 					email: profileDetails.email,

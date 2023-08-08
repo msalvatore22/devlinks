@@ -1,13 +1,15 @@
 import { useAuth } from "../hooks/useAuth";
 
 const AddLink = () => {
-	const { addLink } = useAuth();
+	const { addLink, user } = useAuth();
+	const disabled = user?.links.length == 5
 
 	const handleAddLink = async () => {
 		try {
 			const newLink = {
 				url: "https://",
 				platform: "custom",
+				iconPath: "/logo-devlinks-small.svg",
 				id: Date.now().toString(),
 			};
 			await addLink(newLink);
@@ -26,6 +28,7 @@ const AddLink = () => {
 			<button
 				onClick={handleAddLink}
 				className="btn btn-outline btn-primary w-full mt-10"
+				disabled={disabled}
 			>
 				+ Add new link
 			</button>

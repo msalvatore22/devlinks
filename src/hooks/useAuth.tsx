@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { auth, db } from "../firebase/firebase";
+import { auth, db, storage } from "../firebase/firebase";
 import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
@@ -15,6 +15,7 @@ import {
 	arrayRemove,
 } from "firebase/firestore";
 import { User as FirebaseUser, UserCredential } from "firebase/auth";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export interface Link {
 	url: string;
@@ -40,6 +41,7 @@ interface AuthContextType {
 	addLink: (link: Link) => Promise<void>;
 	deleteLink: (link: Link) => Promise<void>;
 	updateLinks: (links: Link[]) => Promise<void>;
+	uploadImage: (imageFile: any) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -147,6 +149,27 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 		}
 	};
 
+	const uploadImage = async (imageFile: any): Promise<void> => {
+		if (!auth.currentUser) {
+			throw new Error("User not authenticated.");
+		} else {
+			try {
+				const storageRef = ref(
+					storage,
+					`users/${auth.currentUser.uid}/profile.png`
+				);
+				const result = await uploadBytes(storageRef, imageFile);
+				const url = await getDownloadURL(result.ref);
+
+				await updateDoc(doc(db, "users", auth.currentUser.uid), {
+					photoURL: url,
+				});
+			} catch (error) {
+				throw new Error("Failed to add Image.");
+			}
+		}
+	};
+
 	const value: AuthContextType = {
 		user,
 		signUp,
@@ -155,6 +178,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 		addLink,
 		deleteLink,
 		updateLinks,
+		uploadImage,
 	};
 
 	return (

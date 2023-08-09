@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import LinkButton from "../components/LinkButton";
+import { useParams } from "react-router-dom";
 
 const Preview: React.FC = () => {
 	const { user } = useAuth();
+    let { id } = useParams();
+    const currentURL = window.location.href;
+
+    const [copySuccess, setCopySuccess] = useState("")
+    const [showToast, setShowToast] = useState(false)
+
+	const copyToClipBoard = async () => {
+		try {
+            setShowToast(true)
+			await navigator.clipboard.writeText(currentURL);
+			setCopySuccess('Copied link!');
+            setTimeout(() => {
+                setShowToast(false)
+            }, 2000)
+		} catch (err) {
+			setCopySuccess("Failed to copy!");
+		}
+        
+	};
 	return (
 		<div className="bg-primary w-full h-80 rounded-b-3xl relative">
 			<div className="p-5">
@@ -11,11 +31,26 @@ const Preview: React.FC = () => {
 					<a href="/" className="btn btn-outline btn-primary">
 						Back to Editor
 					</a>
-					<button className="btn btn-primary">Share Link</button>
+					<button
+						onClick={() => copyToClipBoard()}
+						className="btn btn-primary"
+					>
+						Share Link
+					</button>
 				</div>
 			</div>
 
-			{user? (
+			{showToast ? (
+				<div className="w-full flex justify-center">
+					<div className="alert alert-success w-80 text-center">
+						<span className="text-center">{copySuccess}</span>
+					</div>
+				</div>
+			) : (
+				<></>
+			)}
+
+			{user ? (
 				<div className="card w-80 bg-base-100 shadow-xl absolute top-52 m-auto left-0 right-0">
 					<figure className="px-10 pt-10">
 						<img

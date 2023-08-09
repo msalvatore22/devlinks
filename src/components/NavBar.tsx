@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { auth } from "../firebase/firebase";
 
 type NavBarProps = {
 	activeBtnToggle: boolean;
@@ -53,12 +54,17 @@ const NavBar = ({ activeBtnToggle, setActiveBtnToggle }: NavBarProps) => {
 				</button>
 			</div>
 			<div>
-				<a
-					href="/preview"
-					className="btn btn-outline btn-primary btn-wide mr-8"
-				>
-					Preview
-				</a>
+				{auth.currentUser ? (
+					<a
+						href={`/${auth.currentUser.uid}`}
+						className="btn btn-outline btn-primary btn-wide mr-8"
+					>
+						Preview
+					</a>
+				) : (
+					<span className="loading loading-dots loading-lg text-primary"></span>
+				)}
+
 				<button className="btn btn-ghost" onClick={handleSignOut}>
 					Logout
 				</button>

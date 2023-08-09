@@ -37,14 +37,7 @@ const App: React.FunctionComponent<IApplicationProps> = () => {
 						}
 					/>
 					<Route path="/getStarted" element={<GetStarted />} />
-					<Route
-						path="/preview"
-						element={
-							<AuthRoute>
-								<Preview />
-							</AuthRoute>
-						}
-					/>
+					<Route path="/:id" element={<Preview />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/logout" element={<Logout />} />
 					<Route path="/signup" element={<SignUp />} />

@@ -34,7 +34,7 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({
 			) : (
 				<>
 					<PhoneMockUp />
-					<div className="bg-base-100 rounded-xl p-20">
+					<div className="bg-base-100 rounded-xl p-10">
 						<AddLink />
 						<HowTo />
 						<div className="divider"></div>

@@ -2,7 +2,7 @@ const HowTo = () => {
 	return (
 		<div className="flex flex-col justify-center items-center bg-neutral p-10 rounded-xl mt-8">
 			<img
-				className="w-2/4"
+				className="max-h-40"
 				src="/illustration-empty.svg"
 				alt="how to illustration"
 			></img>

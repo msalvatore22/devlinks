@@ -15,31 +15,36 @@ const HomePage: React.FunctionComponent<HomePageProps> = ({
 	const { user } = useAuth();
 	return (
 		<div className="grid grid-cols-40-auto gap-x-6 mt-6">
-			{user?.links && user.links.length > 0 ? (
+			<div>
+				<PhoneMockUp />
+			</div>
+			{user ? (
 				<>
-					<div>
-						<PhoneMockUp />
-					</div>
-					{activeBtnToggle ? (
-						<div className="bg-base-100 rounded-xl p-10">
-							<AddLink />
-							<DevLinkDynamicForm />
-						</div>
+					{user?.links && user.links.length > 0 ? (
+						<>
+							{activeBtnToggle ? (
+								<div className="bg-base-100 rounded-xl p-10">
+									<AddLink />
+									<DevLinkDynamicForm />
+								</div>
+							) : (
+								<div className="bg-base-100 rounded-xl p-10">
+									<ProfileForm />
+								</div>
+							)}
+						</>
 					) : (
 						<div className="bg-base-100 rounded-xl p-10">
-							<ProfileForm />
+							<AddLink />
+							<HowTo />
+							<div className="divider"></div>
 						</div>
 					)}
 				</>
 			) : (
-				<>
-					<PhoneMockUp />
-					<div className="bg-base-100 rounded-xl p-10">
-						<AddLink />
-						<HowTo />
-						<div className="divider"></div>
-					</div>
-				</>
+				<div className="flex h-full w-full justify-center items-center">
+					<span className="loading loading-dots loading-lg text-primary"></span>
+				</div>
 			)}
 		</div>
 	);

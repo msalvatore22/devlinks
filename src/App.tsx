@@ -9,6 +9,7 @@ import GetStarted from "./pages/GetStarted";
 import { AuthProvider } from "./hooks/useAuth";
 import Logout from "./pages/Logout";
 import { useState } from "react";
+import Preview from "./pages/Preview";
 
 export interface IApplicationProps {}
 
@@ -18,17 +19,32 @@ const App: React.FunctionComponent<IApplicationProps> = () => {
 	return (
 		<AuthProvider>
 			<BrowserRouter>
-				<NavBar activeBtnToggle={activeBtnToggle} setActiveBtnToggle={setActiveBtnToggle} />
 				<Routes>
 					<Route
 						path="/"
 						element={
 							<AuthRoute>
-								<HomePage activeBtnToggle={activeBtnToggle} />
+								<div className="p-5">
+									<NavBar
+										activeBtnToggle={activeBtnToggle}
+										setActiveBtnToggle={setActiveBtnToggle}
+									/>
+									<HomePage
+										activeBtnToggle={activeBtnToggle}
+									/>
+								</div>
 							</AuthRoute>
 						}
 					/>
 					<Route path="/getStarted" element={<GetStarted />} />
+					<Route
+						path="/preview"
+						element={
+							<AuthRoute>
+								<Preview />
+							</AuthRoute>
+						}
+					/>
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/logout" element={<Logout />} />
 					<Route path="/signup" element={<SignUp />} />

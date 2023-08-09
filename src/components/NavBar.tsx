@@ -22,51 +22,49 @@ const NavBar = ({ activeBtnToggle, setActiveBtnToggle }: NavBarProps) => {
 		setActiveBtnToggle(false);
 	};
 
-	if (user) {
-		return (
-			<div className="navbar bg-base-100 flex justify-between rounded-xl p-4">
-				<img src="/logo-devlinks-large.svg" alt="devlinks logo"></img>
-				<div>
-					<button
-						onClick={handleLinksClick}
-						className={
-							activeBtnToggle
-								? "btn btn-accent text-primary"
-								: "btn btn-ghost text-gray mr-8"
-						}
-					>
-						<img
-							src="/icon-links-header.svg"
-							alt="icon for link"
-						></img>
-						Links
-					</button>
-					<button
-						onClick={handleProfileClick}
-						className={
-							!activeBtnToggle
-								? "btn btn-accent text-primary"
-								: "btn btn-ghost text-gray ml-8"
-						}
-					>
-						<img
-							src="/icon-profile-details-header.svg"
-							alt="icon for link"
-						></img>
-						Profile Details
-					</button>
-				</div>
-				<div>
-					<button className="btn btn-outline btn-primary btn-wide mr-8">
-						Preview
-					</button>
-					<button className="btn btn-ghost" onClick={handleSignOut}>
-						Logout
-					</button>
-				</div>
+	return (
+		<div className="navbar bg-base-100 flex justify-between rounded-xl p-4">
+			<img src="/logo-devlinks-large.svg" alt="devlinks logo"></img>
+			<div>
+				<button
+					onClick={handleLinksClick}
+					className={
+						activeBtnToggle
+							? "btn btn-accent text-primary"
+							: "btn btn-ghost text-gray mr-8"
+					}
+				>
+					<img src="/icon-links-header.svg" alt="icon for link"></img>
+					Links
+				</button>
+				<button
+					onClick={handleProfileClick}
+					className={
+						!activeBtnToggle
+							? "btn btn-accent text-primary"
+							: "btn btn-ghost text-gray ml-8"
+					}
+				>
+					<img
+						src="/icon-profile-details-header.svg"
+						alt="icon for link"
+					></img>
+					Profile Details
+				</button>
 			</div>
-		);
-	}
+			<div>
+				<a
+					href="/preview"
+					className="btn btn-outline btn-primary btn-wide mr-8"
+				>
+					Preview
+				</a>
+				<button className="btn btn-ghost" onClick={handleSignOut}>
+					Logout
+				</button>
+			</div>
+		</div>
+	);
 };
 
 export default NavBar;

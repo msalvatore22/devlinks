@@ -14,7 +14,7 @@ import {
 	arrayUnion,
 	arrayRemove,
 } from "firebase/firestore";
-import { User as FirebaseUser, UserCredential } from "firebase/auth";
+import { UserCredential } from "firebase/auth";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export interface Link {

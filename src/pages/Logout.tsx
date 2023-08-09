@@ -1,7 +1,8 @@
+import React from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
-const Logout = () => {
+const Logout: React.FC = () => {
 	const { signOutUser } = useAuth();
     const navigate = useNavigate()
     const handleSignOut = () => {

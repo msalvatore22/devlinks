@@ -1,7 +1,8 @@
+import React from "react";
 import { useAuth } from "../hooks/useAuth";
 import LinkButton from "./LinkButton";
 
-const PhoneMockUp = () => {
+const PhoneMockUp: React.FC = () => {
 	const { user } = useAuth();
 
 	return (

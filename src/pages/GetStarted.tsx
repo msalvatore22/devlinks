@@ -1,8 +1,6 @@
 import React from "react";
 
-export interface GetStartedProps {}
-
-const GetStarted: React.FunctionComponent<GetStartedProps> = (props) => {
+const GetStarted: React.FC = () => {
 	return (
 		<div className="flex flex-col justify-center items-center w-screen h-screen bg-neutral">
 			<a

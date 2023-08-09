@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useAuth, ProfileDetails } from "../hooks/useAuth";
 
-type Props = {};
-
-const ProfileForm: React.FC<Props> = () => {
+const ProfileForm: React.FC = () => {
 	const { user, uploadImage, updateProfile } = useAuth();
 	const [firstname, setFirstname] = useState(user?.firstname as string);
 	const [lastname, setLastname] = useState(user?.lastname as string);
@@ -15,16 +13,16 @@ const ProfileForm: React.FC<Props> = () => {
 		setPreviewURL(URL.createObjectURL(file));
 		uploadImage(file);
 	};
-    
-    const handleSubmit = (e: any) => {
-        e.preventDefault()
-        const profileDetails: ProfileDetails = {
-            email: email,
-            firstname: firstname,
-            lastname: lastname
-        }
-        updateProfile(profileDetails)
-    }
+
+	const handleSubmit = (e: any) => {
+		e.preventDefault();
+		const profileDetails: ProfileDetails = {
+			email: email,
+			firstname: firstname,
+			lastname: lastname,
+		};
+		updateProfile(profileDetails);
+	};
 
 	return (
 		<div>
@@ -46,7 +44,12 @@ const ProfileForm: React.FC<Props> = () => {
 									src={previewURL}
 									alt=""
 								/>
-								<button className="btn btn-ghost mt-4" onClick={() => setPreviewURL("")}>Change photo</button>
+								<button
+									className="btn btn-ghost mt-4"
+									onClick={() => setPreviewURL("")}
+								>
+									Change photo
+								</button>
 							</div>
 						) : (
 							<input

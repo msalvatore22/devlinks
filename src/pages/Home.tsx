@@ -9,9 +9,7 @@ import ProfileForm from "../components/ProfileForm";
 type HomePageProps = {
 	activeBtnToggle: boolean;
 };
-const HomePage: React.FunctionComponent<HomePageProps> = ({
-	activeBtnToggle,
-}) => {
+const HomePage: React.FC<HomePageProps> = ({ activeBtnToggle }) => {
 	const { user } = useAuth();
 	return (
 		<div className="grid grid-cols-40-auto gap-x-6 mt-6">

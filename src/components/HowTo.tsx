@@ -1,4 +1,6 @@
-const HowTo = () => {
+import React from "react";
+
+const HowTo: React.FC = () => {
 	return (
 		<div className="flex flex-col justify-center items-center bg-neutral p-10 rounded-xl mt-8">
 			<img

@@ -1,8 +1,9 @@
+import React from "react";
 import { useAuth } from "../hooks/useAuth";
 
-const AddLink = () => {
+const AddLink: React.FC = () => {
 	const { addLink, user } = useAuth();
-	const disabled = user?.links.length == 5
+	const disabled = user?.links.length == 5;
 
 	const handleAddLink = async () => {
 		try {

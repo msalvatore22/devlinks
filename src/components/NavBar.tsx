@@ -8,7 +8,7 @@ type NavBarProps = {
 
 const NavBar = ({ activeBtnToggle, setActiveBtnToggle }: NavBarProps) => {
 	const navigate = useNavigate();
-	const { signOutUser, user } = useAuth();
+	const { signOutUser } = useAuth();
 	async function handleSignOut() {
 		signOutUser();
 		navigate("/getStarted");

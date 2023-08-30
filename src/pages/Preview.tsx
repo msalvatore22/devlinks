@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import LinkButton from "../components/LinkButton";
-import { useParams } from "react-router-dom";
 
 const Preview: React.FC = () => {
 	const { user } = useAuth();
-    let { id } = useParams();
     const currentURL = window.location.href;
 
     const [copySuccess, setCopySuccess] = useState("")

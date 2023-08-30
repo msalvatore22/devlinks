@@ -130,7 +130,11 @@ const SignUp: React.FC = () => {
 							<input
 								{...register("confirmPassword", {
 									required: "Please check again",
-									validate: () => String(getValues("password")) === String(getValues("confirmPassword"))
+									validate: () =>
+										String(getValues("password")) ===
+											String(
+												getValues("confirmPassword")
+											) || "Passwords do not match",
 								})}
 								id="confirmPassword"
 								type="password"
@@ -142,9 +146,7 @@ const SignUp: React.FC = () => {
 								}
 							/>
 							<span className="text-error absolute right-2 bottom-7">
-								{errors.confirmPassword && errors.confirmPassword.type === "validate" && (
-									<p>Passwords do no match</p>
-								)}
+								{errors.confirmPassword?.message}
 							</span>
 						</div>
 

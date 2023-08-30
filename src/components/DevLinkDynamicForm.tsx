@@ -110,6 +110,7 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 		formState: { errors },
 		handleSubmit,
 		setValue,
+		getValues,
 	} = useForm<FormValues>({
 		defaultValues: {
 			devLinks: devlinkInputs,
@@ -120,18 +121,22 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 		control,
 	});
 
-	function getPlatformURL(e: any): string {
+	function getPlatformURL(platform: string): string {
 		let result = "";
 		for (let item of menuItems) {
-			if (item.platform === e.target.value) {
+			if (item.platform === platform) {
 				result = item.baseURL;
 			}
 		}
 		return result;
 	}
 
+	function validateURL(url: string, platform: string): boolean {
+		const baseURL = getPlatformURL(platform);
+		return url.startsWith(baseURL);
+	}
+
 	const onSubmit: SubmitHandler<FormValues> = (data) => {
-		console.log(data.devLinks);
 		setDevLinkInputs(data.devLinks);
 		updateLinks(data.devLinks);
 	};
@@ -173,7 +178,7 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 							onChange={(e) =>
 								setValue(
 									`devLinks.${idx}.url`,
-									getPlatformURL(e)
+									getPlatformURL(e.target.value)
 								)
 							}
 						>
@@ -181,15 +186,33 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 								<option key={index}>{item.platform}</option>
 							))}
 						</select>
-						<label htmlFor="link" className="label">
-							<span className="label-text text-xs">Link</span>
-						</label>
-						<input
-							{...register(`devLinks.${idx}.url`)}
-							id={field.id}
-							name={`devLinks.${idx}.url`}
-							className="input input-bordered w-full"
-						/>
+						<div className="relative">
+							<label htmlFor="link" className="label">
+								<span className="label-text text-xs">Link</span>
+							</label>
+							<input
+								{...register(`devLinks.${idx}.url`, {
+									required: "Can't be empty",
+									validate: (v) =>
+										validateURL(
+											v,
+											getValues(
+												`devLinks.${idx}.platform`
+											)
+										) || "Please check the URL",
+								})}
+								id={field.id}
+								name={`devLinks.${idx}.url`}
+								className={
+									errors.devLinks?.[idx]?.url?.message
+										? "input input-bordered w-full input-error"
+										: "input input-bordered w-full focus:border-primary"
+								}
+							/>
+							<span className="text-error text-sm absolute right-4 bottom-3">
+								{errors.devLinks?.[idx]?.url?.message}
+							</span>
+						</div>
 					</div>
 				</div>
 			);
@@ -205,7 +228,8 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 					with the world!
 				</p>
 				<button
-					onClick={() => {
+					onClick={(e) => {
+						e.preventDefault();
 						append({
 							url: "https://",
 							platform: "Custom",
@@ -219,8 +243,7 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 					+ Add new link
 				</button>
 			</div>
-			{fields.length === 0 ? (<HowTo />) : (<RenderFields />)}
-			
+			{fields.length === 0 ? <HowTo /> : <RenderFields />}
 
 			<div className="divider"></div>
 			<div className="flex justify-end w-full">

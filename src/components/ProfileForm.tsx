@@ -1,11 +1,26 @@
 import React, { useState } from "react";
 import { useAuth, ProfileDetails } from "../hooks/useAuth";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+type Inputs = {
+	email: string;
+	firstname: string;
+    lastname: string;
+};
 
 const ProfileForm: React.FC = () => {
-	const { user, uploadImage, updateProfile } = useAuth();
-	const [firstname, setFirstname] = useState(user?.firstname as string);
-	const [lastname, setLastname] = useState(user?.lastname as string);
-	const [email, setEmail] = useState(user?.email as string);
+    const { user, uploadImage, updateProfile } = useAuth();
+    const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<Inputs>({
+        defaultValues: {
+            email: user?.email,
+            firstname: user?.firstname,
+            lastname: user?.lastname
+        }
+    });
 	const [previewURL, setPreviewURL] = useState(user?.photoURL);
 
 	const handleUploadImage = (e: any) => {
@@ -14,15 +29,18 @@ const ProfileForm: React.FC = () => {
 		uploadImage(file);
 	};
 
-	const handleSubmit = (e: any) => {
-		e.preventDefault();
-		const profileDetails: ProfileDetails = {
-			email: email,
-			firstname: firstname,
-			lastname: lastname,
-		};
-		updateProfile(profileDetails);
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+		try {
+			await updateProfile({
+                email: data.email,
+                firstname: data.firstname,
+                lastname: data.lastname
+            })
+		} catch (err) {
+			console.log(err);
+		}
 	};
+    
 
 	return (
 		<div>
@@ -69,44 +87,69 @@ const ProfileForm: React.FC = () => {
 					</div>
 				</div>
 			</div>
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit(onSubmit)}>
 				<div className="flex flex-col bg-neutral w-full p-6 rounded-xl my-8">
-					<div className="flex justify-between items-baseline">
+					<div className="flex justify-between items-baseline relative">
 						<p className="text-gray">First name*</p>
 						<input
+							{...register("firstname", {
+								required: "Can't be empty",
+							})}
 							id="firstname"
 							type="text"
 							placeholder="e.g. Johnny"
-							className="input input-bordered w-4/5 mb-4 focus:border-primary invalid:[&:not(:placeholder-shown):not(:focus)]:border-error"
-							required
-							value={firstname}
-							onChange={(e) => setFirstname(e.target.value)}
+							className={
+								errors.firstname?.message
+									? "input input-bordered w-4/5 mb-4 border-error"
+									: "input input-bordered w-4/5 mb-4 focus:border-primary"
+							}
 						/>
+						<span className="text-error absolute right-4 top-3">
+							{errors.firstname?.message}
+						</span>
 					</div>
-					<div className="flex justify-between items-baseline">
+					<div className="flex justify-between items-baseline relative">
 						<p className="text-gray">Last name*</p>
 						<input
+							{...register("lastname", {
+								required: "Can't be empty",
+							})}
 							id="lastname"
 							type="text"
 							placeholder="e.g. Appleseed"
-							className="input input-bordered w-4/5 mb-4 focus:border-primary invalid:[&:not(:placeholder-shown):not(:focus)]:border-error"
-							required
-							value={lastname}
-							onChange={(e) => setLastname(e.target.value)}
+							className={
+								errors.lastname?.message
+									? "input input-bordered w-4/5 mb-4 border-error"
+									: "input input-bordered w-4/5 mb-4 focus:border-primary"
+							}
 						/>
+						<span className="text-error absolute right-4 top-3">
+							{errors.lastname?.message}
+						</span>
 					</div>
-					<div className="flex justify-between items-baseline">
+					<div className="flex justify-between items-baseline relative">
 						<p className="text-gray">Email</p>
 						<input
+							{...register("email", {
+								required: "Can't be empty",
+								pattern: {
+									value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+									message: "Not valid email",
+								},
+							})}
 							id="email"
 							type="email"
 							placeholder="e.g. email@email.com"
 							autoComplete="email"
-							className="input input-bordered w-4/5 mb-4 focus:border-primary invalid:[&:not(:placeholder-shown):not(:focus)]:border-error"
-							required
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
+							className={
+								errors.email?.message
+									? "input input-bordered w-4/5 mb-4 border-error"
+									: "input input-bordered w-4/5 mb-4 focus:border-primary"
+							}
 						/>
+						<span className="text-error absolute right-4 top-3">
+							{errors.email?.message}
+						</span>
 					</div>
 				</div>
 

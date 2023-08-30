@@ -31,6 +31,8 @@ const platformColors: JSONObject = {
 const LinkButton: React.FC<Props> = ({ link }) => {
 	const platformColorLookup: string =
 		platformColors[link.platform.toLowerCase().split(" ").join("")];
+    
+        console.log(link.iconPath)
 
 	return (
 		<a

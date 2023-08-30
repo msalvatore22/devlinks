@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useAuth } from "../hooks/useAuth";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import HowTo from "./HowTo";
-import { MenuItems } from "../constants/MenuItems";
+import { MenuItems, MenuItem } from "../constants/MenuItems";
 
 type Props = {
 	link?: Link;
@@ -38,18 +38,18 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 		control,
 	});
 
-	function getPlatformURL(platform: string): string {
-		let result = "";
+	function menuItemPlatformLookup(platform: string): MenuItem {
+		let result = {} as MenuItem;
 		for (let item of MenuItems) {
 			if (item.platform === platform) {
-				result = item.baseURL;
+				result = item;
 			}
 		}
 		return result;
 	}
 
 	function validateURL(url: string, platform: string): boolean {
-		const baseURL = getPlatformURL(platform);
+		const baseURL = menuItemPlatformLookup(platform)["baseURL"];
 		return url.startsWith(baseURL);
 	}
 
@@ -92,12 +92,19 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 							className="select select-bordered platform"
 							id={field.id}
 							name={`devLinks.${idx}.platform`}
-							onChange={(e) =>
+							onChange={(e) => {
+								let platformLookup = menuItemPlatformLookup(
+									e.target.value
+								);
 								setValue(
 									`devLinks.${idx}.url`,
-									getPlatformURL(e.target.value)
-								)
-							}
+									platformLookup["baseURL"]
+								);
+								setValue(
+									`devLinks.${idx}.iconPath`,
+									platformLookup["iconPath"]
+								);
+							}}
 						>
 							{MenuItems.map((item, index) => (
 								<option key={index}>{item.platform}</option>

@@ -1,4 +1,4 @@
-interface MenuItem {
+export interface MenuItem {
 	platform: string;
 	baseURL: string;
 	iconPath: string;

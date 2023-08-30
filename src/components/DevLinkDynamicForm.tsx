@@ -95,7 +95,6 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 
 	useEffect(() => {
 		setDevLinkInputs(user?.links as any[]);
-		console.log("useeffect fired");
 	}, [user?.links]);
 
 	const handleDevLinkChange = (e: any) => {

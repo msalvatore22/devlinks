@@ -1,24 +1,33 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 export interface LoginPageProps {}
 
-const LoginPage: React.FC<LoginPageProps> = () => {
-	const navigate = useNavigate();
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const { signIn } = useAuth()
+type Inputs = {
+	email: string;
+	password: string;
+};
 
-	async function handleSubmit(e: React.FormEvent) {
-		e.preventDefault();
+const LoginPage: React.FC<LoginPageProps> = () => {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<Inputs>();
+
+	const navigate = useNavigate();
+	const { signIn } = useAuth();
+
+	const onSubmit: SubmitHandler<Inputs> = async (data) => {
 		try {
-			await signIn(email, password)
-			navigate("/")
-		} catch(err) {
-			console.log(err)
+			await signIn(data.email, data.password);
+			navigate("/");
+		} catch (err) {
+			alert(err)
 		}
-	}
+	};
 
 	return (
 		<div className="w-screen h-screen flex justify-center items-center">
@@ -29,36 +38,81 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 						Add your details below to get back into the app
 					</p>
 					<form
-						onSubmit={handleSubmit}
+						onSubmit={handleSubmit(onSubmit)}
 						className="form-control w-full"
 					>
-						<label htmlFor="email" className="label">
-							<span className="label-text">Email address</span>
-						</label>
-						<input
-							id="email"
-							type="email"
-							placeholder="e.g. alex@email.com"
-							autoComplete="email"
-							className="input input-bordered w-full mb-4 focus:border-primary invalid:[&:not(:placeholder-shown):not(:focus)]:border-error"
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
-							required
-						/>
-						<label htmlFor="password" className="label">
-							<span className="label-text">Password</span>
-						</label>
-						<input
-							id="password"
-							type="password"
-							placeholder="Enter your password"
-							className="input input-bordered w-full mb-4 peer invalid:[&:not(:placeholder-shown):not(:focus)]:border-error"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							required
-						/>
+						<div className="relative">
+							<label htmlFor="email" className="label">
+								<span
+									className={
+										errors.email?.message
+											? "label-text text-error"
+											: "label-text"
+									}
+								>
+									Email address
+								</span>
+							</label>
+							<input
+								{...register("email", {
+									required: "Can't be empty",
+								})}
+								id="email"
+								type="email"
+								placeholder="e.g. alex@email.com"
+								autoComplete="email"
+								className={
+									errors.email?.message
+										? "input input-bordered w-full mb-4 input-error"
+										: "input input-bordered w-full mb-4 focus:border-primary"
+								}
+							/>
+							<span className="text-error absolute right-2 bottom-7">
+								{errors.email?.message}
+							</span>
+						</div>
+						<div className="relative">
+							<label htmlFor="password" className="label">
+								<span
+									className={
+										errors.password?.message
+											? "label-text text-error"
+											: "label-text"
+									}
+								>
+									Password
+								</span>
+							</label>
+							<input
+								{...register("password", {
+									required: "Please check again",
+									minLength: {
+										value: 8,
+										message:
+											"Must be at least 8 characters",
+									},
+									pattern: {
+										value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+										message:
+											"At least one letter and one number",
+									},
+								})}
+								id="password"
+								type="password"
+								placeholder="Enter your password"
+								className={
+									errors.password?.message
+										? "input input-bordered w-full mb-4 input-error"
+										: "input input-bordered w-full mb-4 focus:border-primary"
+								}
+							/>
+							<span className="text-error absolute right-2 bottom-7">
+								{errors.password?.message}
+							</span>
+						</div>
+
 						<div className="card-actions">
-							<button className="btn btn-primary w-full mb-4">
+							<button className="btn btn-primary w-full my-4">
 								Login
 							</button>
 						</div>

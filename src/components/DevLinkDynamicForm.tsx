@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useAuth } from "../hooks/useAuth";
+import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
+
 
 interface MenuItem {
 	platform: string;
@@ -9,7 +11,7 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
 	{
-		platform: "Select a platform",
+		platform: "Custom",
 		baseURL: "https://",
 		iconPath: "",
 	},
@@ -89,59 +91,52 @@ type Props = {
 	link?: Link;
 };
 
+type FormValues = {
+	devLinks: Link[]
+}
+
 const DevLinkDynamicForm: React.FC<Props> = () => {
-	const { user, updateLinks, deleteLink } = useAuth();
+	const { user, updateLinks } = useAuth();
 	const [devlinkInputs, setDevLinkInputs] = useState(user?.links as any[]);
 
 	useEffect(() => {
 		setDevLinkInputs(user?.links as any[]);
 	}, [user?.links]);
 
-	const handleDevLinkChange = (e: any) => {
-		const updatedLinks = [...devlinkInputs];
-		updatedLinks[e.target.dataset.idx][e.target.dataset.name] =
-			e.target.value;
+	const { register, control, formState: {errors}, handleSubmit, setValue } =
+		useForm<FormValues>({
+			defaultValues: {
+				devLinks: devlinkInputs
+			}
+		});
+	const { fields, remove } = useFieldArray({
+		name: "devLinks",
+		control
+	});
 
-		setDevLinkInputs(updatedLinks);
-	};
-
-	const handleDevPlatformChange = (e: any) => {
-		const updatedLinks = [...devlinkInputs];
-		let url = "";
-		let iconPath = "";
+	function getPlatformURL(e: any): string {
+		let result = ""
 		for (let item of menuItems) {
 			if (item.platform === e.target.value) {
-				url = item.baseURL;
-				iconPath = item.iconPath;
+				result = item.baseURL
 			}
 		}
-		updatedLinks[e.target.dataset.idx][e.target.dataset.name] =
-			e.target.value;
-		updatedLinks[e.target.dataset.idx]["url"] = url;
-		updatedLinks[e.target.dataset.idx]["iconPath"] = iconPath;
-		setDevLinkInputs(updatedLinks);
-	};
+		return result
+	}
 
-	const handleSubmit = (e: any) => {
-		e.preventDefault();
-		setDevLinkInputs(devlinkInputs);
-		updateLinks(devlinkInputs);
-		alert("Updated links");
-	};
-
-	const handleRemoveLink = (e: any, link: Link) => {
-		e.preventDefault();
-		deleteLink(link);
+	const onSubmit: SubmitHandler<FormValues> = (data) => {
+		console.log(data.devLinks)
+		setDevLinkInputs(data.devLinks)
+		updateLinks(data.devLinks)
+		alert("Updated Links!")
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
-			{devlinkInputs?.map((val, idx) => {
-				const platformId = `platform-${idx}`;
-				const urlId = `url-${idx}`;
+		<form onSubmit={handleSubmit(onSubmit)}>
+			{fields.map((field, idx) => {
 				return (
 					<div
-						key={idx}
+						key={field.id}
 						className="flex flex-col bg-neutral w-full p-6 rounded-xl my-8"
 					>
 						<div className="flex justify-between">
@@ -156,7 +151,7 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 							</div>
 
 							<button
-								onClick={(e) => handleRemoveLink(e, val)}
+								onClick={() => remove(idx)}
 								className="btn btn-ghost btn-sm text-gray font-light"
 							>
 								Remove
@@ -169,12 +164,16 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 								</span>
 							</label>
 							<select
+								{...register(`devLinks.${idx}.platform`)}
 								className="select select-bordered platform"
-								id={platformId}
-								data-idx={idx}
-								data-name="platform"
-								onChange={handleDevPlatformChange}
-								value={val.platform}
+								id={field.id}
+								name={`devLinks.${idx}.platform`}
+								onChange={(e) =>
+									setValue(
+										`devLinks.${idx}.url`,
+										getPlatformURL(e)
+									)
+								}
 							>
 								{menuItems.map((item, index) => (
 									<option key={index}>{item.platform}</option>
@@ -184,13 +183,10 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 								<span className="label-text text-xs">Link</span>
 							</label>
 							<input
-								id={urlId}
-								name={urlId}
+								{...register(`devLinks.${idx}.url`)}
+								id={field.id}
+								name={`devLinks.${idx}.url`}
 								className="input input-bordered w-full"
-								value={val.url}
-								data-idx={idx}
-								data-name="url"
-								onChange={handleDevLinkChange}
 							/>
 						</div>
 					</div>

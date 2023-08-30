@@ -148,6 +148,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 					links: links,
 				});
 			} catch (error) {
+				console.log(error)
 				throw new Error("Failed to add Link.");
 			}
 		}

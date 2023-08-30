@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAuth, ProfileDetails } from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 type Inputs = {

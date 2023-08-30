@@ -9,7 +9,7 @@ const AddLink: React.FC = () => {
 		try {
 			const newLink = {
 				url: "https://",
-				platform: "custom",
+				platform: "Custom",
 				iconPath: "/logo-devlinks-small.svg",
 				id: Date.now().toString(),
 			};

@@ -1,19 +1,29 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+type Inputs = {
+	email: string;
+	password: string;
+	confirmPassword: string;
+};
 
 const SignUp: React.FC = () => {
+	const {
+		register,
+		getValues,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<Inputs>();
+
 	const navigate = useNavigate();
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
 	const { signUp } = useAuth();
 
-	const handleSubmit = async (e: any) => {
-		e.preventDefault();
-
+	const onSubmit: SubmitHandler<Inputs> = async (data) => {
+		
 		try {
-			await signUp(email, password);
+			await signUp(data.email, data.password);
 			navigate("/");
 		} catch (err) {
 			console.log(err);
@@ -29,56 +39,113 @@ const SignUp: React.FC = () => {
 						Let's getyou started sharing your links!
 					</p>
 					<form
-						onSubmit={handleSubmit}
+						onSubmit={handleSubmit(onSubmit)}
 						className="form-control w-full"
 					>
-						<label
-							htmlFor="email"
-							className="label invalid:text-error"
-						>
-							<span className="label-text">Email address</span>
-						</label>
-						<div className="flex relative">
+						<div className="relative">
+							<label htmlFor="email" className="label">
+								<span
+									className={
+										errors.email?.message
+											? "label-text text-error"
+											: "label-text"
+									}
+								>
+									Email address
+								</span>
+							</label>
 							<input
+								{...register("email", {
+									required: "Can't be empty",
+									pattern: {
+										value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+										message: "Not valid email",
+									},
+								})}
 								id="email"
 								type="email"
 								placeholder="e.g. alex@email.com"
 								autoComplete="email"
-								className="input input-bordered w-full mb-4 focus:border-primary invalid:[&:not(:placeholder-shown):not(:focus)]:border-error"
-								value={email}
-								onChange={(e) => setEmail(e.target.value)}
-								required
+								className={
+									errors.email?.message
+										? "input input-bordered w-full mb-4 input-error"
+										: "input input-bordered w-full mb-4 focus:border-primary"
+								}
 							/>
+							<span className="text-error absolute right-2 bottom-7">
+								{errors.email?.message}
+							</span>
 						</div>
-						<label htmlFor="password" className="label">
-							<span className="label-text">Password</span>
-						</label>
-						<div className="flex relative">
+						<div className="relative">
+							<label htmlFor="password" className="label">
+								<span
+									className={
+										errors.password?.message
+											? "label-text text-error"
+											: "label-text"
+									}
+								>
+									Password
+								</span>
+							</label>
 							<input
+								{...register("password", {
+									required: "Please check again",
+									minLength: {
+										value: 8,
+										message:
+											"Must be at least 8 characters",
+									},
+									pattern: {
+										value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+										message:
+											"At least one letter and one number",
+									},
+								})}
 								id="password"
 								type="password"
-								placeholder="Enter your password"
-								className="input input-bordered w-full mb-4 peer invalid:[&:not(:placeholder-shown):not(:focus)]:border-error"
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-								required
+								placeholder="At least 8 characters"
+								className={
+									errors.password?.message
+										? "input input-bordered w-full mb-4 input-error"
+										: "input input-bordered w-full mb-4 focus:border-primary"
+								}
 							/>
+							<span className="text-error absolute right-2 bottom-7">
+								{errors.password?.message}
+							</span>
 						</div>
-						<label htmlFor="confirm" className="label">
-							<span className="label-text">Confirm password</span>
-						</label>
-						<div className="flex relative">
+						<div className="relative">
+							<label htmlFor="confirmPassword" className="label">
+								<span
+									className={
+										errors.confirmPassword
+											? "label-text text-error"
+											: "label-text"
+									}
+								>
+									Confirm Password
+								</span>
+							</label>
 							<input
-								id="confrim"
+								{...register("confirmPassword", {
+									required: "Please check again",
+									validate: () => String(getValues("password")) === String(getValues("confirmPassword"))
+								})}
+								id="confirmPassword"
 								type="password"
 								placeholder="At least 8 characters"
-								className="input input-bordered w-full mb-4"
-								value={confirmPassword}
-								onChange={(e) =>
-									setConfirmPassword(e.target.value)
+								className={
+									errors.confirmPassword
+										? "input input-bordered w-full mb-4 input-error"
+										: "input input-bordered w-full mb-4 focus:border-primary"
 								}
-								required
 							/>
+							<span className="text-error absolute right-2 bottom-7">
+								{errors.confirmPassword && errors.confirmPassword.type === "validate" && (
+									<p>Passwords do no match</p>
+								)}
+							</span>
 						</div>
 
 						<p className="text-sm text-gray mb-4">

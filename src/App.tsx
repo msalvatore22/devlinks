@@ -1,4 +1,5 @@
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
@@ -24,6 +25,7 @@ const App: React.FunctionComponent<IApplicationProps> = () => {
 						path="/"
 						element={
 							<AuthRoute>
+								<div className="p-5">
 									<NavBar
 										activeBtnToggle={activeBtnToggle}
 										setActiveBtnToggle={setActiveBtnToggle}
@@ -31,6 +33,7 @@ const App: React.FunctionComponent<IApplicationProps> = () => {
 									<HomePage
 										activeBtnToggle={activeBtnToggle}
 									/>
+								</div>
 							</AuthRoute>
 						}
 					/>

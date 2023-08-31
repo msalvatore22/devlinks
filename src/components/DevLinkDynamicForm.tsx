@@ -3,6 +3,7 @@ import { Link, useAuth } from "../hooks/useAuth";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import HowTo from "./HowTo";
 import { MenuItems, MenuItem } from "../constants/MenuItems";
+import { ToastContainer, toast } from "react-toastify";
 
 type Props = {
 	link?: Link;
@@ -53,9 +54,27 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 		return url.startsWith(baseURL);
 	}
 
-	const onSubmit: SubmitHandler<FormValues> = (data) => {
-		setDevLinkInputs(data.devLinks);
-		updateLinks(data.devLinks);
+	const showToastErrorMessage = (message: string) => {
+		toast.error(message, {
+			position: toast.POSITION.TOP_CENTER,
+		});
+	};
+
+	const showToastSucessMessage = (message: string) => {
+		toast.success(message, {
+			position: toast.POSITION.TOP_CENTER,
+		});
+	};
+
+	const onSubmit: SubmitHandler<FormValues> = async (data) => {
+		try {
+			setDevLinkInputs(data.devLinks);
+			updateLinks(data.devLinks);
+			showToastSucessMessage("Succesfully updated links!")
+		} catch (error: any) {
+			showToastErrorMessage(error.message)
+		}
+		
 	};
 
 	const RenderFields: React.FC = () => {
@@ -144,38 +163,41 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
-			<div>
-				<h1 className="text-3xl font-bold">Customize your links</h1>
-				<p className="text-gray mt-2">
-					Add/edit/remove links below and then share all your profiles
-					with the world!
-				</p>
-				<button
-					onClick={(e) => {
-						e.preventDefault();
-						append({
-							url: "https://",
-							platform: "Custom",
-							iconPath: "/logo-devlinks-small.svg",
-							id: Date.now().toString(),
-						});
-					}}
-					className="btn btn-outline btn-primary w-full mt-10"
-					disabled={disabled}
-				>
-					+ Add new link
-				</button>
-			</div>
-			{fields.length === 0 ? <HowTo /> : <RenderFields />}
+		<div>
+			<ToastContainer />
+			<form onSubmit={handleSubmit(onSubmit)}>
+				<div>
+					<h1 className="text-3xl font-bold">Customize your links</h1>
+					<p className="text-gray mt-2">
+						Add/edit/remove links below and then share all your
+						profiles with the world!
+					</p>
+					<button
+						onClick={(e) => {
+							e.preventDefault();
+							append({
+								url: "https://",
+								platform: "Custom",
+								iconPath: "/logo-devlinks-small.svg",
+								id: Date.now().toString(),
+							});
+						}}
+						className="btn btn-outline btn-primary w-full mt-10"
+						disabled={disabled}
+					>
+						+ Add new link
+					</button>
+				</div>
+				{fields.length === 0 ? <HowTo /> : <RenderFields />}
 
-			<div className="divider"></div>
-			<div className="flex justify-end w-full">
-				<button type="submit" className="btn btn-primary">
-					Save
-				</button>
-			</div>
-		</form>
+				<div className="divider"></div>
+				<div className="flex justify-end w-full">
+					<button type="submit" className="btn btn-primary">
+						Save
+					</button>
+				</div>
+			</form>
+		</div>
 	);
 };
 

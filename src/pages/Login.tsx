@@ -1,4 +1,6 @@
 import React from "react";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -20,17 +22,24 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 	const navigate = useNavigate();
 	const { signIn } = useAuth();
 
+	const showToastMessage = (message: string) => {
+		toast.error(message, {
+			position: toast.POSITION.TOP_CENTER,
+		});
+	};
+
 	const onSubmit: SubmitHandler<Inputs> = async (data) => {
 		try {
 			await signIn(data.email, data.password);
 			navigate("/");
-		} catch (err) {
-			alert(err)
+		} catch (err: any) {
+			showToastMessage(err.message)
 		}
 	};
 
 	return (
-		<div className="w-screen h-screen flex justify-center items-center">
+		<div className="w-full min-h-screen flex justify-center items-center">	
+			<ToastContainer />
 			<div className="card w-[480px] h-min bg-base-100 shadow-xl">
 				<div className="card-body w-full">
 					<h1 className="card-title text-3xl">Login</h1>

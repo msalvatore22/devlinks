@@ -20,6 +20,8 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 		formState: { errors },
 	} = useForm<Inputs>();
 
+	const inputStyle = "input input-bordered w-full px-11 mb-4"
+
 	const navigate = useNavigate();
 	const { signIn } = useAuth();
 
@@ -33,7 +35,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 	};
 
 	return (
-		<div className="w-full min-h-screen flex justify-center items-center">	
+		<div className="w-full min-h-screen flex justify-center items-center">
 			<ToastContainer />
 			<div className="card w-[480px] h-min bg-base-100 shadow-xl">
 				<div className="card-body w-full">
@@ -67,13 +69,18 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 								autoComplete="email"
 								className={
 									errors.email?.message
-										? "input input-bordered w-full mb-4 input-error"
-										: "input input-bordered w-full mb-4 focus:border-primary"
+										? `${inputStyle} input-error`
+										: `${inputStyle} focus:border-primary`
 								}
 							/>
 							<span className="text-error absolute right-2 bottom-7">
 								{errors.email?.message}
 							</span>
+							<img
+								className="absolute bottom-8 left-4"
+								src="/icon-email.svg"
+								alt="email icon"
+							></img>
 						</div>
 						<div className="relative">
 							<label htmlFor="password" className="label">
@@ -106,13 +113,18 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 								placeholder="Enter your password"
 								className={
 									errors.password?.message
-										? "input input-bordered w-full mb-4 input-error"
-										: "input input-bordered w-full mb-4 focus:border-primary"
+										? `${inputStyle} input-error`
+										: `${inputStyle} focus:border-primary`
 								}
 							/>
 							<span className="text-error absolute right-2 bottom-7">
 								{errors.password?.message}
 							</span>
+							<img
+								className="absolute bottom-8 left-4"
+								src="/icon-password.svg"
+								alt="email icon"
+							></img>
 						</div>
 
 						<div className="card-actions">

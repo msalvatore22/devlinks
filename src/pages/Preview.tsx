@@ -1,29 +1,25 @@
 import React, { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import LinkButton from "../components/LinkButton";
+import { ToastContainer } from "react-toastify";
+import { showToastErrorMessage, showToastSucessMessage } from "../components/Toast";
 
 const Preview: React.FC = () => {
 	const { user } = useAuth();
-    const currentURL = window.location.href;
-
-    const [copySuccess, setCopySuccess] = useState("")
-    const [showToast, setShowToast] = useState(false)
+    const currentURL = window.location.href
 
 	const copyToClipBoard = async () => {
 		try {
-            setShowToast(true)
 			await navigator.clipboard.writeText(currentURL);
-			setCopySuccess('Copied link!');
-            setTimeout(() => {
-                setShowToast(false)
-            }, 2000)
+            showToastSucessMessage("Copied to clipboard!")
 		} catch (err) {
-			setCopySuccess("Failed to copy!");
+			showToastErrorMessage("Failed to copy!");
 		}
         
 	};
 	return (
 		<div className="bg-primary w-full h-80 rounded-b-3xl relative">
+            <ToastContainer />
 			<div className="p-5">
 				<div className="navbar bg-base-100 flex justify-between rounded-xl p-4">
 					<a href="/" className="btn btn-outline btn-primary">
@@ -37,17 +33,6 @@ const Preview: React.FC = () => {
 					</button>
 				</div>
 			</div>
-
-			{showToast ? (
-				<div className="w-full flex justify-center">
-					<div className="alert alert-success w-80 text-center">
-						<span className="text-center">{copySuccess}</span>
-					</div>
-				</div>
-			) : (
-				<></>
-			)}
-
 			{user ? (
 				<div className="card w-80 bg-base-100 shadow-xl absolute top-52 m-auto left-0 right-0">
 					<figure className="px-10 pt-10">

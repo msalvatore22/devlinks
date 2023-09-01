@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { ToastContainer } from "react-toastify";
+import { showToastErrorMessage, showToastSucessMessage } from "./Toast";
 
 type Inputs = {
 	email: string;
@@ -23,11 +25,19 @@ const ProfileForm: React.FC = () => {
     });
 	const [previewURL, setPreviewURL] = useState(user?.photoURL);
 
-	const handleUploadImage = (e: any) => {
-		const file = e.target.files[0];
-		setPreviewURL(URL.createObjectURL(file));
-		uploadImage(file);
+	const handleUploadImage = async (e: any) => {
+        const file = e.target.files[0];
+        try {
+            setPreviewURL(URL.createObjectURL(file));
+			uploadImage(file);
+            showToastSucessMessage("Succesfully uploaded image!");
+        } catch (error: any) {
+            showToastErrorMessage(error.message);
+        }
+		
 	};
+
+    
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
 		try {
@@ -36,14 +46,16 @@ const ProfileForm: React.FC = () => {
                 firstname: data.firstname,
                 lastname: data.lastname
             })
-		} catch (err) {
-			console.log(err);
+            showToastSucessMessage("Succesfully updated profile!");
+		} catch (error: any) {
+			showToastErrorMessage(error.message);
 		}
 	};
     
 
 	return (
 		<div>
+            <ToastContainer />
 			<h1 className="text-3xl font-bold">Profile Details</h1>
 			<p className="text-gray mt-2">
 				Add your details to add a personal touch to your profile.

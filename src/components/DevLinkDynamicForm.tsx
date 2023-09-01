@@ -3,7 +3,8 @@ import { Link, useAuth } from "../hooks/useAuth";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import HowTo from "./HowTo";
 import { MenuItems, MenuItem } from "../constants/MenuItems";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import { showToastErrorMessage, showToastSucessMessage } from "./Toast";
 
 type Props = {
 	link?: Link;
@@ -53,18 +54,6 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 		const baseURL = menuItemPlatformLookup(platform)["baseURL"];
 		return url.startsWith(baseURL);
 	}
-
-	const showToastErrorMessage = (message: string) => {
-		toast.error(message, {
-			position: toast.POSITION.TOP_CENTER,
-		});
-	};
-
-	const showToastSucessMessage = (message: string) => {
-		toast.success(message, {
-			position: toast.POSITION.TOP_CENTER,
-		});
-	};
 
 	const onSubmit: SubmitHandler<FormValues> = async (data) => {
 		try {

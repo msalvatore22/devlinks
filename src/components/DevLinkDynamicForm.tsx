@@ -145,13 +145,18 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 								name={`devLinks.${idx}.url`}
 								className={
 									errors.devLinks?.[idx]?.url?.message
-										? "input input-bordered w-full input-error"
-										: "input input-bordered w-full focus:border-primary"
+										? "input input-bordered w-full px-11 input-error"
+										: "input input-bordered w-full px-11 focus:border-primary"
 								}
 							/>
 							<span className="text-error text-sm absolute right-4 bottom-3">
 								{errors.devLinks?.[idx]?.url?.message}
 							</span>
+							<img
+								className="absolute bottom-4 left-4"
+								src="./icon-link.svg"
+								alt="platform icon"
+							></img>
 						</div>
 					</div>
 				</div>

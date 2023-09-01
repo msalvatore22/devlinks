@@ -123,7 +123,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 							<img
 								className="absolute bottom-8 left-4"
 								src="/icon-password.svg"
-								alt="email icon"
+								alt="password icon"
 							></img>
 						</div>
 

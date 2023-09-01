@@ -20,6 +20,8 @@ const SignUp: React.FC = () => {
 	const navigate = useNavigate();
 	const { signUp } = useAuth();
 
+	const inputStyle = "input input-bordered w-full px-11 mb-4";
+
 	const onSubmit: SubmitHandler<Inputs> = async (data) => {
 		
 		try {
@@ -68,13 +70,18 @@ const SignUp: React.FC = () => {
 								autoComplete="email"
 								className={
 									errors.email?.message
-										? "input input-bordered w-full mb-4 input-error"
-										: "input input-bordered w-full mb-4 focus:border-primary"
+										? `${inputStyle} input-error`
+										: `${inputStyle} focus:border-primary`
 								}
 							/>
 							<span className="text-error absolute right-2 bottom-7">
 								{errors.email?.message}
 							</span>
+							<img
+								className="absolute bottom-8 left-4"
+								src="/icon-email.svg"
+								alt="email icon"
+							></img>
 						</div>
 						<div className="relative">
 							<label htmlFor="password" className="label">
@@ -107,13 +114,18 @@ const SignUp: React.FC = () => {
 								placeholder="At least 8 characters"
 								className={
 									errors.password?.message
-										? "input input-bordered w-full mb-4 input-error"
-										: "input input-bordered w-full mb-4 focus:border-primary"
+										? `${inputStyle} input-error`
+										: `${inputStyle} focus:border-primary`
 								}
 							/>
 							<span className="text-error absolute right-2 bottom-7">
 								{errors.password?.message}
 							</span>
+							<img
+								className="absolute bottom-8 left-4"
+								src="/icon-password.svg"
+								alt="password icon"
+							></img>
 						</div>
 						<div className="relative">
 							<label htmlFor="confirmPassword" className="label">
@@ -141,13 +153,18 @@ const SignUp: React.FC = () => {
 								placeholder="At least 8 characters"
 								className={
 									errors.confirmPassword
-										? "input input-bordered w-full mb-4 input-error"
-										: "input input-bordered w-full mb-4 focus:border-primary"
+										? `${inputStyle} input-error`
+										: `${inputStyle} focus:border-primary`
 								}
 							/>
 							<span className="text-error absolute right-2 bottom-7">
 								{errors.confirmPassword?.message}
 							</span>
+							<img
+								className="absolute bottom-8 left-4"
+								src="/icon-password.svg"
+								alt="password icon"
+							></img>
 						</div>
 
 						<p className="text-sm text-gray mb-4">

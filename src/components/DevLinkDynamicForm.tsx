@@ -95,29 +95,37 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 						<label htmlFor="platform" className="label">
 							<span className="label-text text-xs">Platform</span>
 						</label>
-						<select
-							{...register(`devLinks.${idx}.platform`)}
-							className="select select-bordered platform"
-							id={field.id}
-							name={`devLinks.${idx}.platform`}
-							onChange={(e) => {
-								let platformLookup = menuItemPlatformLookup(
-									e.target.value
-								);
-								setValue(
-									`devLinks.${idx}.url`,
-									platformLookup["baseURL"]
-								);
-								setValue(
-									`devLinks.${idx}.iconPath`,
-									platformLookup["iconPath"]
-								);
-							}}
-						>
-							{MenuItems.map((item, index) => (
-								<option key={index}>{item.platform}</option>
-							))}
-						</select>
+						<div className="w-full relative">
+							<select
+								{...register(`devLinks.${idx}.platform`)}
+								className="select select-bordered platform px-11 w-full"
+								id={field.id}
+								name={`devLinks.${idx}.platform`}
+								onChange={(e) => {
+									let platformLookup = menuItemPlatformLookup(
+										e.target.value
+									);
+									setValue(
+										`devLinks.${idx}.url`,
+										platformLookup["baseURL"]
+									);
+									setValue(
+										`devLinks.${idx}.iconPath`,
+										platformLookup["iconPath"]
+									);
+								}}
+							>
+								{MenuItems.map((item, index) => (
+									<option key={index}>{item.platform}</option>
+								))}
+							</select>
+							<img
+								className="absolute bottom-4 left-4"
+								src={devlinkInputs[idx].iconPath}
+								alt="platform icon"
+							></img>
+						</div>
+
 						<div className="relative">
 							<label htmlFor="link" className="label">
 								<span className="label-text text-xs">Link</span>

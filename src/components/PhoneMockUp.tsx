@@ -6,7 +6,7 @@ const PhoneMockUp: React.FC = () => {
 	const { user } = useAuth();
 
 	return (
-		<div className="flex justify-center bg-base-100 rounded-xl p-20 relative">
+		<div className="flex justify-center bg-base-100 rounded-xl p-20 relative hidden lg:flex">
 			<img
 				className="max-h-630p max-w-310p"
 				src="/illustration-phone-mockup.svg"

@@ -10,7 +10,7 @@ type HomePageProps = {
 const HomePage: React.FC<HomePageProps> = ({ activeBtnToggle }) => {
 	const { user } = useAuth();
 	return (
-		<div className="grid grid-cols-40-auto gap-x-6 mt-6">
+		<div className="grid lg:grid-cols-40-auto grid-cols-none gap-x-6 mt-6">
 			<div>
 				<PhoneMockUp />
 			</div>

@@ -32,7 +32,7 @@ const NavBar = ({ activeBtnToggle, setActiveBtnToggle }: NavBarProps) => {
 					className={
 						activeBtnToggle
 							? "btn btn-accent text-primary"
-							: "btn btn-ghost text-gray mr-8"
+							: "btn btn-ghost text-gray mr-2"
 					}
 				>
 					<img src="/icon-links-header.svg" alt="icon for link"></img>
@@ -43,7 +43,7 @@ const NavBar = ({ activeBtnToggle, setActiveBtnToggle }: NavBarProps) => {
 					className={
 						!activeBtnToggle
 							? "btn btn-accent text-primary"
-							: "btn btn-ghost text-gray ml-8"
+							: "btn btn-ghost text-gray ml-2"
 					}
 				>
 					<img
@@ -57,7 +57,7 @@ const NavBar = ({ activeBtnToggle, setActiveBtnToggle }: NavBarProps) => {
 				{auth.currentUser ? (
 					<a
 						href={`/${auth.currentUser.uid}`}
-						className="btn btn-outline btn-primary btn-wide mr-8"
+						className="btn btn-outline btn-primary lg:btn-wide"
 					>
 						Preview
 					</a>
@@ -65,7 +65,7 @@ const NavBar = ({ activeBtnToggle, setActiveBtnToggle }: NavBarProps) => {
 					<span className="loading loading-dots loading-lg text-primary"></span>
 				)}
 
-				<button className="btn btn-ghost" onClick={handleSignOut}>
+				<button className="btn btn-ghost ml-2" onClick={handleSignOut}>
 					Logout
 				</button>
 			</div>

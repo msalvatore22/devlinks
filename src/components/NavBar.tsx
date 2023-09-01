@@ -25,7 +25,16 @@ const NavBar = ({ activeBtnToggle, setActiveBtnToggle }: NavBarProps) => {
 
 	return (
 		<div className="navbar bg-base-100 flex justify-between rounded-xl p-4">
-			<img src="/logo-devlinks-large.svg" alt="devlinks logo"></img>
+			<img
+				className="sm:hidden sm:block"
+				src="/logo-devlinks-small.svg"
+				alt="devlinks logo"
+			></img>
+			<img
+				className="hidden md:block"
+				src="/logo-devlinks-large.svg"
+				alt="devlinks logo"
+			></img>
 			<div>
 				<button
 					onClick={handleLinksClick}
@@ -36,7 +45,7 @@ const NavBar = ({ activeBtnToggle, setActiveBtnToggle }: NavBarProps) => {
 					}
 				>
 					<img src="/icon-links-header.svg" alt="icon for link"></img>
-					Links
+					<p className="hidden sm:block">Links</p>
 				</button>
 				<button
 					onClick={handleProfileClick}
@@ -50,23 +59,35 @@ const NavBar = ({ activeBtnToggle, setActiveBtnToggle }: NavBarProps) => {
 						src="/icon-profile-details-header.svg"
 						alt="icon for link"
 					></img>
-					Profile Details
+					<p className="hidden sm:block">Profile Details</p>
 				</button>
 			</div>
 			<div>
 				{auth.currentUser ? (
-					<a
-						href={`/${auth.currentUser.uid}`}
-						className="btn btn-outline btn-primary lg:btn-wide"
-					>
-						Preview
-					</a>
+					<>
+						<a
+							href={`/${auth.currentUser.uid}`}
+							className="btn btn-outline btn-primary lg:btn-wide"
+						>
+							<img
+								className="sm:hidden sm:block"
+								src="/icon-preview-header.svg"
+								alt="icon for link"
+							></img>
+							<p className="hidden sm:block">Preview</p>
+						</a>
+					</>
 				) : (
 					<span className="loading loading-dots loading-lg text-primary"></span>
 				)}
 
 				<button className="btn btn-ghost ml-2" onClick={handleSignOut}>
-					Logout
+					<img
+						className="sm:hidden sm:block"
+						src="/icons8-logout-24.png"
+						alt="icon logout"
+					></img>
+					<p className="hidden sm:block">Logout</p>
 				</button>
 			</div>
 		</div>

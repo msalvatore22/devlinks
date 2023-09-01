@@ -194,7 +194,10 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 
 				<div className="divider"></div>
 				<div className="flex justify-end w-full">
-					<button type="submit" className="btn btn-primary">
+					<button
+						type="submit"
+						className="btn btn-primary btn-block sm:btn-wide"
+					>
 						Save
 					</button>
 				</div>

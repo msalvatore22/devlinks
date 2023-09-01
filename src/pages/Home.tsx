@@ -17,11 +17,11 @@ const HomePage: React.FC<HomePageProps> = ({ activeBtnToggle }) => {
 			{user ? (
 				<>
 					{activeBtnToggle ? (
-						<div className="bg-base-100 rounded-xl p-10">
+						<div className="bg-base-100 rounded-xl sm:p-10 p-2">
 							<DevLinkDynamicForm />
 						</div>
 					) : (
-						<div className="bg-base-100 rounded-xl p-10">
+						<div className="bg-base-100 rounded-xl sm:p-10 p-2">
 							<ProfileForm />
 						</div>
 					)}

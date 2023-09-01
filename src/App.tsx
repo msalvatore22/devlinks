@@ -25,7 +25,7 @@ const App: React.FunctionComponent<IApplicationProps> = () => {
 						path="/"
 						element={
 							<AuthRoute>
-								<div className="p-5">
+								<div className="sm:p-5 p-0">
 									<NavBar
 										activeBtnToggle={activeBtnToggle}
 										setActiveBtnToggle={setActiveBtnToggle}

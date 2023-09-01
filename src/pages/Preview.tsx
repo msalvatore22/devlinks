@@ -18,7 +18,7 @@ const Preview: React.FC = () => {
         
 	};
 	return (
-		<div className="bg-primary w-full h-80 rounded-b-3xl relative">
+		<div className="bg-base-100 w-full h-80 rounded-b-3xl relative sm:bg-primary">
             <ToastContainer />
 			<div className="p-5">
 				<div className="navbar bg-base-100 flex justify-between rounded-xl p-4">
@@ -34,7 +34,7 @@ const Preview: React.FC = () => {
 				</div>
 			</div>
 			{user ? (
-				<div className="card w-80 bg-base-100 shadow-xl absolute top-52 m-auto left-0 right-0">
+				<div className="card w-80 bg-base-100 sm:shadow-xl absolute top-52 m-auto left-0 right-0">
 					<figure className="px-10 pt-10">
 						<img
 							src={user?.photoURL}

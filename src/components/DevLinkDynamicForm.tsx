@@ -208,6 +208,7 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 									let platformLookup = menuItemPlatformLookup(
 										e.target.value
 									);
+									console.log(platformLookup);
 									setValue(
 										`devLinks.${idx}.url`,
 										platformLookup["baseURL"]
@@ -289,7 +290,7 @@ const DevLinkDynamicForm: React.FC<Props> = () => {
 								append({
 									url: "https://",
 									platform: "Custom",
-									iconPath: "/logo-devlinks-small.svg",
+									iconPath: "/icon-link.svg",
 									id: Date.now().toString(),
 								});
 							}}

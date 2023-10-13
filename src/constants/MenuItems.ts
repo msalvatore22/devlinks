@@ -46,11 +46,6 @@ export const MenuItems: MenuItem[] = [
 		iconPath: "/icon-twitch.svg",
 	},
 	{
-		platform: "Dev.to",
-		baseURL: "https://www.dev.to/",
-		iconPath: "/icon-devto.svg",
-	},
-	{
 		platform: "Codewars",
 		baseURL: "https://www.codewars.com/",
 		iconPath: "/icon-codewars.svg",

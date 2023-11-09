@@ -39,6 +39,7 @@ export type ProfileDetails = Pick<User, "email" | "firstname" | "lastname">;
 interface AuthContextType {
 	user: User | null;
 	signUp: (email: string, password: string) => Promise<UserCredential>;
+	signUpDemo: () => Promise<UserCredential>;
 	signIn: (email: string, password: string) => Promise<UserCredential>;
 	signOutUser: () => Promise<void>;
 	addLink: (link: Link) => Promise<void>;
@@ -86,6 +87,36 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 	}, []);
 
 	const signUp = async (email: string, password: string) => {
+		const res = await createUserWithEmailAndPassword(auth, email, password);
+		const authUser = res.user;
+
+		await setDoc(doc(db, "users", authUser.uid), {
+			email: authUser.email,
+			photoURL: authUser?.photoURL ?? null,
+			links: [],
+			firstname: "",
+			lastname: "",
+		});
+
+		return res;
+	};
+
+	const signUpDemo = async () => {
+		const generateRandomString = (length: number) => {
+			let result = "";
+			const characters =
+				"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+			const charactersLength = characters.length;
+			for (let i = 0; i < length; i++) {
+				result += characters.charAt(
+					Math.floor(Math.random() * charactersLength)
+				);
+			}
+			return result;
+		};
+		const email = generateRandomString(10) + '@devlinks.com'
+		const password = generateRandomString(8)
+
 		const res = await createUserWithEmailAndPassword(auth, email, password);
 		const authUser = res.user;
 
@@ -198,6 +229,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 	const value: AuthContextType = {
 		user,
 		signUp,
+		signUpDemo,
 		signIn,
 		signOutUser,
 		addLink,

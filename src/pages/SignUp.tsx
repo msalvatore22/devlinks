@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { showToastErrorMessage } from "../components/Toast";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 type Inputs = {
@@ -18,7 +19,7 @@ const SignUp: React.FC = () => {
 	} = useForm<Inputs>();
 
 	const navigate = useNavigate();
-	const { signUp } = useAuth();
+	const { signUp, signUpDemo } = useAuth();
 
 	const inputStyle = "input input-bordered w-full px-11 mb-4";
 
@@ -31,6 +32,15 @@ const SignUp: React.FC = () => {
 			console.log(err);
 		}
 	};
+
+	const onSignUpDemo = async () => {
+		try {
+			await signUpDemo()
+			navigate("/")
+		} catch (err: any) {
+			showToastErrorMessage(err.message);
+		}
+	}
 
 	return (
 		<div className="w-screen h-screen flex justify-center items-center">
@@ -185,6 +195,12 @@ const SignUp: React.FC = () => {
 							Login
 						</a>
 					</p>
+					<button
+						onClick={() => onSignUpDemo()}
+						className="btn btn-primary btn-outline mt-4 w-1/2 m-auto"
+					>
+						Demo Login
+					</button>
 				</div>
 			</div>
 		</div>

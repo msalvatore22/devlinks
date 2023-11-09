@@ -38,7 +38,7 @@ const Preview: React.FC = () => {
 					<figure className="px-10 pt-10">
 						<img
 							src={user?.photoURL}
-							alt="user profile"
+							alt=""
 							className="rounded-full w-32 h-32 border-solid border-4 border-primary"
 						/>
 					</figure>
